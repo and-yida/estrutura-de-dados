@@ -14,6 +14,7 @@ As operações para a manipulação de dados incluem: criação da estrutra; inc
 Uma boa técnica de programação consiste em implementar os TADs em arquivos separados do programa principal. Para isso, geralmente separa-se a declaração e a implementação em dois arquivos:  
   - NomeDoTAD.h : com a declaração  
   - NomeDoTAD.c : com a implementação  
+
 O arquivo ".h" contém: protótipos das funções, tipos de ponteiro e dados globalmente acessíveis.  
 O arquivo ".c" contém: declaração do tipo de dados e implementação das suas funções.  
 
