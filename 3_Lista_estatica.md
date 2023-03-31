@@ -122,6 +122,34 @@ Inserção ordenada na lista estática
 ```
 
 <br />
+
+## REMOÇÃO
+
+Remoção de um elemento na lista estática.
+```c
+
+    int remove_lista(Lista* li, int mat){
+        if(li == NULL)                                                      //verificando se a lista existe
+            return 0;                                                       //verificando se a lista é vazia
+        if(li->qtd == 0)
+            return 0;
+        int k,i = 0;
+        while(i<li->qtd && li->dados[i].matricula != mat)                   //percorre a lista enquanto não chegou ao fim ainda (<qtd) e enquanto a matrícula dos elementos não for aquela que estamos procurando (mat)
+            i++;
+        if(i == li->qtd)                                                    //elemento não encontrado
+            return 0;
+
+        for(k=i; k< li->qtd-1; k++)                                        //encontrado o elemento, o contador k recebe o valor i, que é a posição do elemento encontrado; vai percorrer enquanto a lista não chegar ao fim (o fim com a remoção será qtd-1)
+            li->dados[k] = li->dados[k+1];                                 //a posição k vai receber o próximo elemento, bem como todos os próximos elementos vão ser deslocados em uma posição pra trás
+        li->qtd--;                                                         //atualizando o tamanho da lista, qtd tem um elemento a menos agora
+        return 1;
+    }
+```
+
+Note que o último elemento da lista "sobrará" na última posição do que era a qtd inicial da lista, no entanto, como diminuímos o tamanho da lista (qtd--), essa posição de memória será ignorada (lixo do sistema).
+
+
+<br />
 <br />
 <br />
 <br />
