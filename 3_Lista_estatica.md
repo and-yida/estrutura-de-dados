@@ -125,7 +125,7 @@ Inserção ordenada na lista estática
 
 ## REMOÇÃO
 
-Remoção de um elemento na lista estática.
+Remoção de um elemento na lista estática
 ```c
 
     int remove_lista(Lista* li, int mat){
@@ -148,6 +148,40 @@ Remoção de um elemento na lista estática.
 
 Note que o último elemento da lista "sobrará" na última posição do que era a qtd inicial da lista, no entanto, como diminuímos o tamanho da lista (qtd--), essa posição de memória será ignorada (lixo do sistema).
 
+<br />
+
+## CONSULTA
+
+Consulta por posição
+```c
+    int consulta_lista_pos(Lista* li, int pos, struct aluno *al){
+        if(li == NULL || pos <= 0 ||  pos > li->qtd)
+            return 0;
+        *al = li->dados[pos-1];                                            //o ponteiro *al recebe a posição desejada, sendo possível recuperar o conteúdo dessa posição
+        return 1;
+    }
+```
+
+Consulta por variável
+```c
+    int consulta_lista_mat(Lista* li, int mat, struct aluno *al){         //consultando por matrícula
+        if(li == NULL)
+            return 0;
+        int i = 0;
+        while(i<li->qtd && li->dados[i].matricula != mat)
+            i++;
+        if(i == li->qtd)//elemento nao encontrado
+            return 0;
+
+        *al = li->dados[i];
+        return 1;
+    }
+```
+
+No programa principal
+```c
+    int x = consulta_lista_mat(li, mat, &dados_aluno);
+```    
 
 <br />
 <br />
