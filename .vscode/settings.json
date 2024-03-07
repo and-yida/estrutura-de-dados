@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "listasequencial.h": "c"
+        "listasequencial.h": "c",
+        "lista_dinamica_encadeada": "c",
+        "stdlib.h": "c"
     }
 }

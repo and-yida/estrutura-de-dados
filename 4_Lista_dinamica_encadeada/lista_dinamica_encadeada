@@ -1,0 +1,184 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct aluno{
+    int matricula;
+    char nome[30];
+    float n1,n2,n3;
+};
+
+// definição do nó da lista
+struct elemento{
+    struct aluno dados;
+    struct elemento *prox;
+};
+
+typedef struct elemento Elem;
+
+// ponteiro para ponteiro: receberá o endereço para a lista a ser criada
+typedef struct elemento* Lista;
+
+// inicializa a lista: aloca memória para o primeiro elemento e passa seu endereço para o ponteiro li
+Lista* cria_lista(){
+    Lista* li = (Lista*) malloc(sizeof(Lista));
+    // se deu certo, preenche os campos do primeiro elemento com NULL
+    if(li != NULL)
+        *li = NULL;
+    return li;
+}
+
+// libera a memória ocupada pela lista
+void libera_lista(Lista* li){
+    if(li != NULL){
+        Elem* no;
+        while((*li) != NULL){       // enquanto houver lista
+            no = *li;               // no recebe li, que é o começo da lista (cabeça)
+            *li = (*li)->prox;      // li passa a apontar para o próximo elemento
+            free(no);               // apaga o elemento
+        }
+        free(li);                   // finaliza por liberar o último nó
+    }
+}
+
+int insere_lista_inicio(Lista* li, struct aluno al){
+    if(li == NULL)
+        return 0;
+    Elem* no;
+    // aloca memória para receber o novo elemento
+    no = (Elem*) malloc(sizeof(Elem));
+    if(no == NULL)
+        return 0;
+    no->dados = al;
+    // prox do novo elemento recebe o primeiro da lista atual
+    // caso a lista for vazia, prox vai ser NULL, como queríamos
+    no->prox = (*li);
+    // o ponteiro que aponta para o início da lista é atualizado com o endereço do novo nó
+    *li = no;
+    return 1;
+}
+
+int insere_lista_ordenada(Lista* li, struct aluno al){
+    if(li == NULL)      // se a lista não existe
+        return 0;
+    Elem *no = (Elem*) malloc(sizeof(Elem));
+    if(no == NULL)      // se não foi possível criar o novo nó
+        return 0;
+    no->dados = al;
+    if((*li) == NULL){      // se lista vazia, insere no início
+        no->prox = NULL;
+        *li = no;
+        return 1;
+    }
+    else{
+        Elem *anterior, *atual = *li;
+        // atual começa no início da lista; guarda o anterior quando faz atual receber o próximo
+        while(atual != NULL && atual->dados.matricula < al.matricula){
+            anterior = atual;
+            atual = atual->prox;
+        }
+        if(atual == *li){       // inserção no início
+            no->prox = (*li);
+            *li = no;
+        }else{                  // inserção no meio ou fim; se fim, prox recebe NULL
+            no->prox = atual;   // próximo do atual vira o próximo do nó
+            anterior->prox = no;     // próximo do anterior recebe o nó
+        }
+        return 1;
+    }
+}
+
+int remove_lista(Lista* li, int mat){
+    if(li == NULL)
+        return 0;
+    if((*li) == NULL)
+        return 0;
+    Elem *anterior, *no = *li;
+    // percorre a lista procurando o elemento de interesse
+    while(no != NULL && no->dados.matricula != mat){
+        anterior = no;
+        no = no->prox;
+    }
+    if(no == NULL)      // se não for encontrado
+        return 0;
+
+    if(no == *li)       // remoção no início
+        *li = no->prox;
+    else                // remoção no meio ou não fim
+        anterior->prox = no->prox;
+    free(no);
+    return 1;
+}
+
+int consulta_lista_posicao(Lista* li, int pos, struct aluno *al){
+    if(li == NULL || pos <= 0)
+        return 0;
+    Elem *no = *li;
+    int i = 1;
+    while(no != NULL && i < pos){
+        no = no->prox;
+        i++;
+    }
+    if(no == NULL)          // se a posição não se enontra
+        return 0;
+    else{
+        *al = no->dados;    // copia conteúdo do nó na posição
+        return 1;
+    }
+}
+
+int consulta_lista_elemento(Lista* li, int mat, struct aluno *al){
+    if(li == NULL)
+        return 0;
+    Elem *no = *li;
+    while(no != NULL && no->dados.matricula != mat){
+        no = no->prox;
+    }
+    if(no == NULL)      // se o elemento não se encontra
+        return 0;
+    else{
+        *al = no->dados;
+        return 1;
+    }
+}
+
+
+int tamanho_lista(Lista* li){
+    if(li == NULL)
+        return 0;
+    int cont = 0;
+    // no recebe o início da lista, e depois, a cada iteração, recebe um por um dos nós
+    // e quantidade é contabilizada em cont
+    Elem *no = *li;
+    while(no != NULL){
+        cont++;
+        no = no->prox;
+    }
+    return cont;
+}
+
+int lista_vazia(Lista* li){
+    if(li == NULL)
+        return 1;
+    if(*li == NULL)
+        return 1;
+    return 0;
+}
+
+void main(){
+
+    struct aluno al, a[4] = {{2,"Andre",9.5,7.8,8.5},
+                         {4,"Ricardo",7.5,8.7,6.8},
+                         {1,"Bianca",9.7,6.7,8.4},
+                         {3,"Ana",5.7,6.1,7.4}};
+    Lista* li = cria_lista();
+    printf("Tamanho: %d\n\n\n\n",tamanho_lista(li));
+
+    int i;
+    for(i=0; i < 4; i++)
+        insere_lista_ordenada(li,a[i]);
+
+    imprime_lista(li);
+    printf("\n\n\n\n Tamanho: %d\n",tamanho_lista(li));
+
+}
+
