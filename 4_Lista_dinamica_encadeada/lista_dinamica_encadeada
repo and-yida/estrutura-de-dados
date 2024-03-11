@@ -118,7 +118,7 @@ int consulta_lista_posicao(Lista* li, int pos, struct aluno *al){
         no = no->prox;
         i++;
     }
-    if(no == NULL)          // se a posição não se enontra
+    if(no == NULL)          // se a posição não se encontra
         return 0;
     else{
         *al = no->dados;    // copia conteúdo do nó na posição
