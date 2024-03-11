@@ -99,6 +99,25 @@ int consulta_lista_elemento(Lista* li, int mat, struct aluno *al){
     return 1;
 }
 
+// busca binária deve receber, a princípio, inicio 0 e fim o último elemento da lista, retornado por ultimo_elemento()
+// divide a lista no meio; se a posição meio for o elemento procurado, retorna meio.
+// se não, compara se este elemento é menor ou maior que o procurado
+// se o elemento procurado for maior que o meio, o início passa a ser meio+1 e a busca se dá na metade superior;
+// se o elemento procurado for menor que o meio, o início se mantém e o fim passa a meio-1, buscando na metade inferior
+int busca_binaria(Lista* li, struct aluno al, int inicio, int fim){
+    int meio = (inicio+fim)/2;
+
+    if(inicio>fim) return -1;       // se não achou o elemento
+    else if(al.matricula == li->dados[meio].matricula) return meio;
+    else if(al.matricula > li->dados[meio].matricula) return (busca_binaria(li,al,meio+1,fim));        // busca na metade superior
+    else if(al.matricula < li->dados[meio].matricula)return (busca_binaria(li,al,inicio,meio-1));      // busca na metade inferior
+}
+
+// marca o fim da lista, para ser utilizado na busca binária
+int ultimo_elemento(Lista* li){
+    return li->qtd-1;
+}
+
 void imprime_lista(Lista* li){
     if(li == NULL)
         return;
@@ -125,6 +144,20 @@ void main(){
         insere_lista_ordenada(li,a[i]);
 
     imprime_lista(li);
+
+    struct aluno al1 = {1,"Bianca",9.7,6.7,8.4};
+
+    int tamanho = ultimo_elemento(li);
+    int posicao = busca_binaria(li, al1, 0, tamanho);
+
+    printf("\nPosição de Bianca: %d \n", posicao);
+
+    struct aluno al4 = {4,"Ricardo",7.5,8.7,6.8};
+
+    tamanho = ultimo_elemento(li);
+    posicao = busca_binaria(li, al4, 0, tamanho);
+
+    printf("\nPosição de Ricardo: %d \n", posicao);
 
     libera_lista(li);
     system("pause");
