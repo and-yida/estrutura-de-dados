@@ -141,6 +141,119 @@ void lista_maiores_menores(Lista* L, Lista* Ma, Lista* Me, int valor){
     }
 }
 
+int troca_valores(Lista* L, int x, int y){
+    int atual = L->prim;
+    int contador = 0;
+    if(atual == -1) printf("Lista vazia!");
+    while(atual != -1){
+        if(L->vetor[atual].elem == x){
+            L->vetor[atual].elem = y;
+            contador++;
+        }
+        atual = L->vetor[atual].prox;
+    }
+    return contador;
+}
+
+void remove_valor(Lista* L, int x){
+    int atual = L->prim;
+    int anterior;
+    while(atual != -1 && (L->vetor[atual].elem != x)){
+        anterior = atual;
+        atual = L->vetor[atual].prox;
+    }
+    if(atual == -1){        // se a lista estiver vazia ou se chegar ao fim sem encontrar o elemento
+        return;
+    }
+    L->vetor[anterior].prox = -1;
+    remove_valor(L, x);     // função se repete até que todas as ocorrências sejam eliminadas
+    return;
+}
+
+/*
+void remove_posicao(Lista* L, int posicao){
+    int atual = L->prim;
+    int anterior;
+    while(atual != -1 && atual < posicao){
+        anterior = atual;
+        atual = L->vetor[atual].prox;
+    }
+    if(atual == -1){        // se a lista estiver vazia ou se chegar ao fim sem encontrar o elemento
+        return;
+    }
+
+}*/
+
+int primeiro_no(Lista* L){
+    int primeiro = L->vetor[0].elem;
+    return primeiro;
+}
+
+int ultimo_no(Lista* L){
+    int ultimo = 0;
+    int atual = L->prim;
+    if(atual = -1) return -1;       // retorna -1 se a lista estiver vazia
+    while (atual != -1){
+        ultimo++;
+        atual = L->vetor[atual].prox;
+    }
+    return ultimo;
+}
+
+int insere_antes_pos(Lista* L, int posicao, struct no novo){
+    int atual = L->prim;
+    int anterior;
+    if(atual == -1){
+        printf("Lista vazia!");
+        return -1;
+    }
+    if(posicao > MAX || posicao < 0){
+        printf("Posição inválida!");
+        return -1;        
+    }
+    while(atual != -1 && atual < posicao){
+        anterior = atual;
+        atual = L->vetor[atual].prox;
+    }
+
+    if(atual == 1){
+        printf("Posição não encontrada - posição excede a quantidade de elementos inseridos!");
+        return -1;
+    }
+
+    L->vetor[atual].elem = novo.elem;
+    novo.prox = L->vetor[atual].prox;
+
+    printf("Elemento inserido com sucesso!");
+    return 0;
+}
+
+int insere_depois_pos(Lista* L, int posicao, struct no novo){
+    int atual = L->prim;
+    if(atual == -1){
+        printf("Lista vazia!");
+        return -1;
+    }
+    if(posicao > MAX || posicao < 0){
+        printf("Posição inválida!");
+        return -1;        
+    }
+    while(atual != -1 && atual < posicao){
+        atual = L->vetor[atual].prox;
+    }
+
+    if(atual == 1){
+        printf("Posição não encontrada - posição excede a quantidade de elementos inseridos!");
+    }
+
+    L->vetor[atual+1].elem = novo.elem;
+    novo.prox = L->vetor[atual].prox;
+    L->vetor[atual].prox = atual+1;
+
+    printf("Elemento inserido com sucesso!");
+    return 0;
+}
+
 
 void main(){
 
