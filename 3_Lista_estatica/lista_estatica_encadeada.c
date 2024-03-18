@@ -16,21 +16,22 @@ struct lista {
     int dispo;
 };
 
-// inicializa a lista, configurando os índices de início e disponíveis.
+// inicializa a lista, configurando os índices de início e disponíveis
 void InicializaLista(struct lista *L) {
-    L->prim = -1;       //lista vazia, então o índice do primeiro elemento é -1.
-    L->dispo = 0;       // o primeiro espaço disponível é o índice 0.
-    // prepara a lista de espaços disponíveis, encadeando-os.
+    L->prim = -1;       //lista vazia, então o índice do primeiro elemento é -1
+    L->dispo = 0;       // o primeiro espaço disponível é o índice 0
+    // encadeamento dos elementos
     for (int i = 0; i < MAX-1; i++) {
-        L->vetor[i].prox = i + 1;       // cada nó aponta para o próximo, formando a lista de disponíveis.
+        L->vetor[i].prox = i + 1;       // cada nó aponta para o próximo
+        
     }
-    L->vetor[MAX-1].prox = -1;      // o último elemento da lista de disponíveis aponta para -1.
+    L->vetor[MAX-1].prox = -1;      // o último elemento da lista aponta para -1
 }
 
 // insere elemento na lista de forma ordenada
 void InsercaoLista(struct lista *L, tipoelem elem) {
     int aux, atual, anterior = -1;
-    // verifica se há espaço disponível para inserção.
+    // verifica se há espaço disponível para inserção
     if (L->dispo != -1) {
         aux = L->dispo;
         L->vetor[aux].elem = elem;      // insere o elemento na posição dispo
@@ -47,7 +48,7 @@ void InsercaoLista(struct lista *L, tipoelem elem) {
                 anterior = atual;
                 atual = L->vetor[atual].prox;
             }
-            // insere no início se necessário.
+            // insere no início se necessário
             if (anterior == -1) {
                 L->vetor[aux].prox = L->prim;
                 L->prim = aux;
@@ -63,7 +64,7 @@ void InsercaoLista(struct lista *L, tipoelem elem) {
 // remove um elemento específico da lista
 void RemocaoLista(struct lista *L, tipoelem elem) {
     int atual = L->prim, anterior = -1;
-    // procura pelo elemento a ser removido, mantendo o controle do anterior.
+    // procura pelo elemento a ser removido, mantendo o controle do anterior
     while (atual != -1 && L->vetor[atual].elem != elem) {
         anterior = atual;
         atual = L->vetor[atual].prox;
