@@ -169,17 +169,29 @@ void remove_valor(Lista* L, int x){
     int atual = L->prim;
     int anterior, dispo;
 
-    while(atual != -1 && (L->vetor[atual].elem != x)){
+    while(atual != -1 && L->vetor[atual].elem != x){
         anterior = atual;
         atual = L->vetor[atual].prox;
     }
-    if(atual == -1){        // se a lista estiver vazia ou se chegar ao fim sem encontrar o elemento
+
+    if(atual == -1){        // se a lista estiver vazia ou se chegar ao fim sem encontrar o elemento. esta é a condição de parada da recursão
         return;
     }
-    
-    L->vetor[anterior].prox = L->vetor[atual].prox;
-    L->dispo = anterior;
+
+    if(atual != -1){
+        if(anterior == -1){     // se remoção do primeiro elemento, atualiza prim
+            L->prim = L->vetor[atual].prox;
+        }
+        else{
+            L->vetor[anterior].prox = L->vetor[atual].prox;
+        } 
+    }
+
+    L->vetor[atual].prox = L->dispo;
+    L->dispo = atual;
+
     remove_valor(L, x);     // função se repete até que todas as ocorrências sejam eliminadas
+
     return;
 }
 
@@ -201,7 +213,7 @@ void remove_posicao(Lista* L, int posicao){
         return;
     }
 
-    L->vetor[anterior].prox = L->vetor[atual].prox;
+    L->vetor[atual].prox = L->dispo;
     L->dispo = anterior;
 }
 
