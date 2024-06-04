@@ -2,6 +2,7 @@
     "files.associations": {
         "listasequencial.h": "c",
         "lista_dinamica_encadeada": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stdio.h": "c"
     }
 }
