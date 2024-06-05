@@ -22,8 +22,8 @@ Arvore* cria_arvore(){
 void libera_No(struct No* no){
     if(no == NULL)
         return;
-    libera_NO(no->esq);
-    libera_NO(no->dir);
+    libera_No(no->esq);
+    libera_No(no->dir);
     free(no);
     no = NULL;
 }
@@ -32,7 +32,7 @@ void libera_No(struct No* no){
 void libera_Arvore(Arvore* raiz){
     if(raiz == NULL)
         return;
-    libera_NO(*raiz);   //libera cada nó
+    libera_No(*raiz);   //libera cada nó
     free(raiz);   //libera a raiz
 }
 
@@ -45,7 +45,7 @@ int estaVazia(Arvore *raiz){
 }
 
 // percorre toda a esquerda até o nó folha, compara com a direita, se houver,
-// a maior altura entre os dois é retornada. a altura naquele ponto é dada por aquela altura + 1.
+// e a maior altura entre os dois é retornada. a altura em um ponto é dada pela altura acumulada + 1.
 // ascende recursivamente na árvore calculando as alturas até a raiz
 int altura(Arvore *raiz){
     if (raiz == NULL)
@@ -55,7 +55,7 @@ int altura(Arvore *raiz){
     int alt_esq = altura(&((*raiz)->esq));
     int alt_dir = altura(&((*raiz)->dir));
     if (alt_esq > alt_dir)
-        return (alt_esq + 1);
+        return(alt_esq + 1);
     else
         return(alt_dir + 1);
 }
@@ -98,7 +98,6 @@ void emOrdem(Arvore *raiz){
     }
 }
 
-
 // visita o nó esquerdo;
 // visita o nó direito;
 // mostra o valor do nó. 
@@ -111,7 +110,6 @@ void posOrdem(Arvore *raiz){
         printf("%d\n",(*raiz)->dado);
     }
 }
-
 
 int insere(Arvore* raiz, int valor){
     if(raiz == NULL)
@@ -192,7 +190,7 @@ struct No* remove_atual(struct No* atual) {
         free(atual);
         return no2;
     }
-    // segundo caso: se o nó possui dois filhos, vai buscar o nó mais a direita na sub-árvore da esquerda
+    // segundo caso: se o nó possui dois filhos, vai buscar o nó mais à direita na sub-árvore da esquerda
     no1 = atual;
     no2 = atual->esq;
     while(no2->dir != NULL){
@@ -209,6 +207,7 @@ struct No* remove_atual(struct No* atual) {
     return no2;
 }
 
+// retorna 0 se o valor não se encontra na árvore, e 1 se o valor foi encontrado com sucesso
 int consulta(Arvore *raiz, int valor){
     if(raiz == NULL)
         return 0;
@@ -224,6 +223,35 @@ int consulta(Arvore *raiz, int valor){
     }
     return 0;
 }
+
+// busca que retorna o nó procurado
+// nos casos em que a árvore é inválida ou o valor não existe, retorna um nó com informações "vazias"
+struct No busca(Arvore *raiz, int valor, struct No *encontrado){
+    if(raiz == NULL)
+        encontrado->dado = 0;
+        encontrado->dir = NULL;
+        encontrado->esq = NULL;
+        return *encontrado;
+
+    struct No* atual = *raiz;
+    while(atual != NULL){
+        if(valor == atual->dado){
+            encontrado->dado = atual->dado;
+            encontrado->dir = atual->dir;
+            encontrado->esq = atual->esq;
+            return *encontrado;
+        }
+        if(valor > atual->dado)
+            atual = atual->dir;
+        else
+            atual = atual->esq;
+    }
+    encontrado->dado = 0;
+    encontrado->dir = NULL;
+    encontrado->esq = NULL;
+    return *encontrado;
+}
+
 
 void main(){
 
