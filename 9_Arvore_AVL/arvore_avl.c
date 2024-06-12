@@ -268,11 +268,12 @@ int remove_Arvore(Arvore *raiz, int valor){
 
     int res;
 
-    // se o valor for menor que o valor da raiz, prosegue para a árvore da esquerda
+    // se o valor for menor que o valor da raiz, prossegue para a árvore da esquerda
 	if(valor < (*raiz)->dado){
         // quando a remoção aí acontece
 	    if((res = remove_Arvore(&(*raiz)->esq,valor)) == 1){
-            if(fatorBalanceamento_No(*raiz) >= 2){  // se desbalanceada, testa a altura da sub-árvore da direita
+            if(fatorBalanceamento_No(*raiz) >= 2){
+                // se desbalanceada, testa a altura da sub-árvore da direita
                 if(altura_No((*raiz)->dir->esq) <= altura_No((*raiz)->dir->dir))
                     RotacaoRR(raiz);
                 else
@@ -281,7 +282,7 @@ int remove_Arvore(Arvore *raiz, int valor){
 	    }
 	}
 
-    // se o valor for menor que o maior da raiz, prosegue para a árvore da direita
+    // se o valor for menor que o maior da raiz, prossegue para a árvore da direita
 	if((*raiz)->dado < valor){
         // quando a remoção aí acontece
 	    if((res = remove_Arvore(&(*raiz)->dir, valor)) == 1){
@@ -299,12 +300,12 @@ int remove_Arvore(Arvore *raiz, int valor){
         // nó tem 1 filho ou nenhum
         // 1 filho: o filho substitui o nó
 	    if(((*raiz)->esq == NULL || (*raiz)->dir == NULL)){
-			struct No *oldNode = (*raiz);
+			struct No *antecessor = (*raiz);
 			if((*raiz)->esq != NULL)
                 *raiz = (*raiz)->esq;
             else
                 *raiz = (*raiz)->dir;
-			free(oldNode);
+			free(antecessor);
 
 		// nó tem 2 filhos
         }else {
